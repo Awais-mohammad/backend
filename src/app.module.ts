@@ -6,17 +6,22 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
-import { UsersService } from './users/users.service';
-
-
+import { ProductsModule } from './products/products.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     UsersModule,
     MongooseModule.forRoot('mongodb://localhost/brixton'),
     AuthModule,
-  
+    ProductsModule,
+   
+    MulterModule.register({
+      dest: './files',
+    })
+
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
