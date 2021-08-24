@@ -22,10 +22,11 @@ export class UsersService {
   checkUser: any;
 
   async create(createUserDto: CreateUserDto) {
-    const email = createUserDto.email
+    const email = createUserDto.email.toLocaleLowerCase()
     console.log(email);
 
-    this.checkUser = await this.userModel.findOne({ email })
+    this.checkUser = await this.userModel.findOne({ "email": { "$regex": email, "$options": "i" } })
+    console.log(this.checkUser);
 
     if (!this.checkUser) {
       const password = createUserDto.password;
@@ -44,9 +45,8 @@ export class UsersService {
       return 'User with this email already exists!!!'
     }
 
-
-    //return new this.userModel(createUserDto).save()
   }
+
 
   findAll() {
     return this.userModel.find();
@@ -74,30 +74,15 @@ export class UsersService {
     }
   }
 
-  data: any;
   update(email: string, updateUserDto: UpdateUserDto) {
-    this.data = this.searchByEmail(email).then(() => {
 
 
-    }).catch((err) => {
-      return JSON.stringify(err)
-    })
 
-    if (this.data) {
-      console.log(this.data);
-
-      if (this.data.length != 0) {
-        this.userModel.updateOne({ email }, { $set: this.userModel })
-        return 'record updated successfully!!'
-      }
-      else {
-        return 'object not found'
-      }
-    }
 
   }
 
   remove(email: string) {
+ 
     return this.userModel.deleteOne({ email });
   }
 }

@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -28,7 +27,7 @@ export class UsersController {
 
   }
 
-  @Patch(':id')
+  @Put(':email')
   update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(email, updateUserDto);
   }
@@ -38,14 +37,5 @@ export class UsersController {
     return this.usersService.remove(email);
   }
 
-  // This route will require successfully passing our default auth strategy (JWT) in order
-  // to access the route
-  @Get('test')
-  @UseGuards(AuthGuard())
-  testAuthRoute() {
-    return {
-      message: 'You did it!'
-    }
-  }
 
 }
