@@ -15,7 +15,7 @@ export class AuthService {
     user: any;
 
     async validateUser(LoginUserDto): Promise<any> {
-        const user = await this.usersService.findOne(LoginUserDto.email.toLowerCase());
+        const user = await this.usersService.searchByEmail(LoginUserDto.email.toLowerCase());
         console.log('user is', user);
 
         this.user = user.toString()

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -24,8 +24,10 @@ export class ProductsController {
   )
   )
   uploadAvatar(@UploadedFile() file) {
-    return "file uploaded succesfully at /uploads/" + file.filename
+    return file.filename
   }
+
+  @Get('avatar/:imgpath') seeUploadedFile(@Param('imgpath') image, @Res() res) { return res.sendFile(image, { root: './uploads' }); }
 
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
@@ -37,9 +39,9 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  @Get(':name')
+  findOne(@Param('name') name: string) {
+    return this.productsService.searchProducts(name);
   }
 
   @Patch(':id')

@@ -42,11 +42,14 @@ export class UsersService {
 
   res: any;
 
-  async findOne(email: string) {
-    this.res = await this.userModel.findOne({ email })
+  async searchByEmail(email: string) {
+    this.res = await this.userModel.find({ "name": { "$regex": email, "$options": "i" } })
     if (this.res) {
       if (this.res.length != 0) {
         return this.res
+      }
+      else if (this.res.length == 0) {
+        return 'no record exists!!!'
       }
       else {
         return 'something went wrong check back later!!'
@@ -54,12 +57,31 @@ export class UsersService {
 
     }
     else {
-      return 'user donnot exists!!'
+      return 'we ran into a problem check back later!!'
     }
   }
 
+  data: any;
   update(email: string, updateUserDto: UpdateUserDto) {
-    this.userModel.updateOne({ email }, { $set: updateUserDto })
+    this.data = this.searchByEmail(email).then(() => {
+
+
+    }).catch((err) => {
+      return JSON.stringify(err)
+    })
+
+    if (this.data) {
+      console.log(this.data);
+
+      if (this.data.length != 0) {
+        this.userModel.updateOne({ email }, { $set: this.userModel })
+        return 'record updated successfully!!'
+      }
+      else {
+        return 'object not found'
+      }
+    }
+
   }
 
   remove(email: string) {

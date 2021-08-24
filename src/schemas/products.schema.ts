@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt'
+import { User } from './users.schema';
 export type prodDocument = Product & Document;
 
 @Schema()
@@ -9,16 +10,13 @@ export class Product {
     name: string;
 
     @Prop()
-    lastName: string;
+    bannerImageURL: string;
 
     @Prop()
-    age: number;
+    prodImageURLS: string[];
 
     @Prop()
-    email: string;
-
-    @Prop()
-    password: string = "";
+    category: string;
 
     @Prop()
     quantity: number;
@@ -27,7 +25,11 @@ export class Product {
     price: number;
 
 
+    @Prop()
+    color: string[];
 
+    @Prop()
+    reviews: { date: string; review: string, username: string, userImageURL: string, userID: string }[];
 
 
 }

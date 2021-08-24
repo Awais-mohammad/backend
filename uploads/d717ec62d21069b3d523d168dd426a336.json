@@ -1,7 +1,0 @@
-{
-  "name": "KapokTree",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
