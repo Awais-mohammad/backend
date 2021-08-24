@@ -43,9 +43,12 @@ export class ProductsService {
     }
   }
 
+
+
   update(id: number, updateProductDto: UpdateProductDto) {
-    this.prodModel.updateOne({ id }, { $set: updateProductDto })
-    return "updated!!!"
+
+    return this.prodModel.updateOne({ id }, { $set: this.prodModel })
+
   }
 
   remove(id: number) {

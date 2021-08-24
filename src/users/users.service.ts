@@ -19,18 +19,31 @@ export class UsersService {
 
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  checkUser: any;
 
-    const password = createUserDto.password;
+  async create(createUserDto: CreateUserDto) {
+    const email = createUserDto.email
+    console.log(email);
 
-    const saltOrRounds = 10;
-    const hash = await bcrypt.hash(password, saltOrRounds);
-    createUserDto.password = hash
+    this.checkUser = await this.userModel.findOne({ email })
 
-    const isMatch = await bcrypt.compare(password, hash);
-    console.log(isMatch);
+    if (!this.checkUser) {
+      const password = createUserDto.password;
 
-    return new this.userModel(createUserDto).save();
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(password, saltOrRounds);
+      createUserDto.password = hash
+
+      const isMatch = await bcrypt.compare(password, hash);
+      console.log(isMatch);
+
+      return new this.userModel(createUserDto).save();
+
+    }
+    else {
+      return 'User with this email already exists!!!'
+    }
+
 
     //return new this.userModel(createUserDto).save()
   }
@@ -43,7 +56,7 @@ export class UsersService {
   res: any;
 
   async searchByEmail(email: string) {
-    this.res = await this.userModel.find({ "name": { "$regex": email, "$options": "i" } })
+    this.res = await this.userModel.find({ "email": { "$regex": email, "$options": "i" } })
     if (this.res) {
       if (this.res.length != 0) {
         return this.res
