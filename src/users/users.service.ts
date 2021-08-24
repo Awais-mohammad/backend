@@ -77,6 +77,7 @@ export class UsersService {
   update(email: string, updateUserDto: UpdateUserDto) {
 
 
+    return this.userModel.updateOne({ email }, { $set: updateUserDto })
 
 
   }

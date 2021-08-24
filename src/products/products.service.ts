@@ -13,9 +13,25 @@ export class ProductsService {
   ) {
 
   }
+  checkProd: any;
+name:string;
 
-  create(createProdDto: CreateProductDto) {
-    return new this.prodModel(createProdDto).save();
+  async create(createProdDto: CreateProductDto) {
+   this.name = createProdDto.name
+    console.log(this.name);
+    this.checkProd = await this.prodModel.findOne({
+      "name": { "$regex": this.name, "$options": "i" },
+      "category": { "$regex": createProdDto.category, "$options": "i" },
+    })
+    console.log(this.checkProd);
+
+
+    if (!this.checkProd) {
+      return new this.prodModel(createProdDto).save();
+    }
+    else {
+      return 'product with these specs already exists!!' + this.checkProd
+    }
   }
 
   findAll() {
@@ -43,15 +59,37 @@ export class ProductsService {
     }
   }
 
+  prodBycats: any;
 
+  async byCat(catName: string) {
+
+    this.prodBycats = await this.prodModel.find({ "category": { "$regex": catName, "$options": "i" } })
+    if (this.prodBycats) {
+      if (this.prodBycats.length != 0) {
+        return this.prodBycats
+      }
+      else if (this.prodBycats.length == 0) {
+        return 'product donnot exists!!'
+
+      }
+      else {
+        return 'something went wrong check back later!!'
+      }
+    }
+    else {
+      return 'no data found!!'
+    }
+  }
 
   update(id: number, updateProductDto: UpdateProductDto) {
 
-    return this.prodModel.updateOne({ id }, { $set: this.prodModel })
+    return this.prodModel.updateOne({ id }, { $set: updateProductDto })
 
   }
 
-  remove(id: number) {
-    return this.prodModel.deleteOne({ id });
+  remove(id: string) {
+    console.log(id);
+
+    return this.prodModel.deleteOne({ _id: id });
   }
 }
