@@ -14,10 +14,10 @@ import { join } from 'path';
 @Module({
   imports: [
     UsersModule,
-    MongooseModule.forRoot('mongodb://localhost/brixton'),
-    // MongooseModule.forRoot('mongodb+srv://awais:awaisme@brixtonbest.88al0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&ssl=true',{
-
-    // }),
+    // MongooseModule.forRoot('mongodb://localhost/brixton'),
+    MongooseModule.forRoot('mongodb+srv://awais:awaisme@brixtonbest.88al0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&ssl=true', {
+      useNewUrlParser: true
+    }),
     AuthModule,
     ProductsModule,
 

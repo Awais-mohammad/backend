@@ -15,44 +15,61 @@ export class AuthService {
     user: any;
 
     async validateUser(LoginUserDto): Promise<any> {
+
         const user = await this.usersService.searchByEmail(LoginUserDto.email.toLowerCase());
-        console.log('user is', user);
 
         this.user = user.toString()
 
 
 
 
-        if (this.user.includes('donnot')) {
-            console.log('fucked ... user nhi milaa!!');
-            return 'passwords donnot match!!'
+
+
+        if (this.user.includes('no record exists!!!')) {
+            console.log('no user found');
+            return 'No records associated with this email'
         }
-        else if (!this.user.includes('user donnot exists')) {
+        else if (!this.user.includes('no record exists')) {
+            const userObj = user.find(item => item.email === LoginUserDto.email);
+            // Here you can access object which you want
+
+            const password = userObj.password;
 
 
-            const saltOrRounds = 10;
-            const hash = await bcrypt.hash(LoginUserDto.password, saltOrRounds);
 
-            const isMatch = await bcrypt.compare(user.password.toString(), hash.toString());
+            const isMatch = await this.checkPassword(LoginUserDto.password, password);
 
             console.log(isMatch);
 
-            if (isMatch) {
-                console.log('tada we got user');
-                const payload = { username: user.username, sub: user.userId };
+            if (isMatch == true) {
+                console.log('tada we got user', userObj._id);
 
+                const payload = { sub: userObj._id };
                 const token = this.jwtService.sign(payload)
                 return token;
             } else {
-                return 'ahh fuckkkk passwords dont match';
+                return 'Password entered is wrong!!!';
 
             }
+
 
         }
 
 
 
     }
+
+    checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
+        return new Promise(function (resolve, reject) {
+            bcrypt.compare(textEnteredInLoginForm, hashedPasswordFromDatabase, function (err, doesMatch) {
+                if (err) {
+                    reject(err);
+                }
+                console.log(doesMatch);
+                resolve(doesMatch);
+            });
+        });
+    };
 
 
 

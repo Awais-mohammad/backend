@@ -14,10 +14,10 @@ export class ProductsService {
 
   }
   checkProd: any;
-name:string;
+  name: string;
 
   async create(createProdDto: CreateProductDto) {
-   this.name = createProdDto.name
+    this.name = createProdDto.name
     console.log(this.name);
     this.checkProd = await this.prodModel.findOne({
       "name": { "$regex": this.name, "$options": "i" },
@@ -27,10 +27,11 @@ name:string;
 
 
     if (!this.checkProd) {
-      return new this.prodModel(createProdDto).save();
+      new this.prodModel(createProdDto).save();
+      return 'product added successfully!!'
     }
     else {
-      return 'product with these specs already exists!!' + this.checkProd
+      return 'product with these specs already exists!!'
     }
   }
 
@@ -63,22 +64,26 @@ name:string;
 
   async byCat(catName: string) {
 
-    this.prodBycats = await this.prodModel.find({ "category": { "$regex": catName, "$options": "i" } })
-    if (this.prodBycats) {
-      if (this.prodBycats.length != 0) {
-        return this.prodBycats
-      }
-      else if (this.prodBycats.length == 0) {
-        return 'product donnot exists!!'
+    this.prodBycats = await this.prodModel.find({ "category": catName })
 
-      }
-      else {
-        return 'something went wrong check back later!!'
-      }
-    }
-    else {
-      return 'no data found!!'
-    }
+    return this.prodBycats;
+    // if (this.prodBycats) {
+    //   if (this.prodBycats.length != 0) {
+    //     return this.prodBycats
+    //   }
+    //   else if (this.prodBycats.length == 0) {
+    //     return 'product donnot exists!!'
+
+    //   }
+    //   else {
+    //     return 'something went wrong check back later!!'
+    //   }
+    // }
+    // else {
+    //   return 'no data found!!'
+    // }
+
+
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

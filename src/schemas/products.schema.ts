@@ -29,9 +29,10 @@ export class Product {
     color: string[];
 
     @Prop()
-    reviews: { date: string; review: string, username: string, userImageURL: string, userID: string }[];
+    timestamp: string;
 
-
+    @Prop()
+    description: string;
 }
 
 export const ProdSchema = SchemaFactory.createForClass(Product);
