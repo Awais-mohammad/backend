@@ -13,9 +13,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { CheckoutModule } from './checkout/checkout.module';
 
 @Module({
   imports: [
+    CheckoutModule,
     UsersModule,
     // MongooseModule.forRoot('mongodb://localhost/brixton'),
     MongooseModule.forRoot('mongodb+srv://awais:awaisme@brixtonbest.88al0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&ssl=true', {
@@ -28,13 +30,13 @@ import { ConfigModule } from '@nestjs/config';
 
     AuthModule,
     ProductsModule,
-
+  
     MulterModule.register({
       dest: './files',
     }),
 
     MailModule,
-    Stripe
+    Stripe,
 
   ],
   controllers: [AppController, AuthController],

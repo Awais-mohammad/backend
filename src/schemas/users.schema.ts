@@ -26,7 +26,8 @@ export class User {
     @Prop()
     adress: string;
 
-
+    @Prop()
+    zip: string;
 
 
 }

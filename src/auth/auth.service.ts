@@ -25,9 +25,11 @@ export class AuthService {
             apiVersion: '2020-08-27',
         });
 
+
+
         stripe.charges.create({
             amount: amount,
-            currency: 'USD',
+            currency: 'SEK',
             description: description,
             source: token
         }).then((check) => {
