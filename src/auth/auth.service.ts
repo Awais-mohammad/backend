@@ -3,6 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import Stripe from 'stripe';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,35 @@ export class AuthService {
     }
 
     user: any;
+
+
+    async stripe(token, amount, description) {
+
+        console.log(token);
+
+
+        const stripe = new Stripe('sk_test_gSL1WLbKaAblYlHv12oBdsxM00eBmhIBfx', {
+            apiVersion: '2020-08-27',
+        });
+
+        stripe.charges.create({
+            amount: amount,
+            currency: 'USD',
+            description: description,
+            source: token
+        }).then((check) => {
+
+
+            return check.paid;
+
+
+        }).catch((err => {
+
+            return err;
+        }))
+
+        return;
+    }
 
     async validateUser(LoginUserDto): Promise<any> {
 

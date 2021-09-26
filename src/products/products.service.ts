@@ -43,21 +43,22 @@ export class ProductsService {
   async searchProducts(name: string) {
     this.res = await this.prodModel.find({ "name": { "$regex": name, "$options": "i" } })
 
-    if (this.res) {
-      if (this.res.length != 0) {
-        return this.res
-      }
-      else if (this.res.length == 0) {
-        return 'product donnot exists!!'
+    return this.res
+    // if (this.res) {
+    //   if (this.res.length != 0) {
+    //     return this.res
+    //   }
+    //   else if (this.res.length == 0) {
+    //     return 'product donnot exists!!'
 
-      }
-      else {
-        return 'something went wrong check back later!!'
-      }
-    }
-    else {
-      return 'no data found!!'
-    }
+    //   }
+    //   else {
+    //     return 'something went wrong check back later!!'
+    //   }
+    // }
+    // else {
+    //   return 'no data found!!'
+    // }
   }
 
   prodBycats: any;

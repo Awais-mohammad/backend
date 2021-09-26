@@ -1,3 +1,4 @@
+import { StripeModule } from 'nestjs-stripe';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 import { UsersModule } from './../users/users.module';
@@ -8,13 +9,18 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
 
+
+
+
 @Module({
   imports: [
+
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: 'ksfhgiorwgsjf34689s7dg65s4vg68dg45sdg',
       signOptions: { expiresIn: '60s' },
     }),
+
 
     UsersModule,
   ],

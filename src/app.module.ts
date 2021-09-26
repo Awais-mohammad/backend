@@ -1,3 +1,4 @@
+import { Stripe } from 'stripe';
 import { JwtService } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -10,6 +11,8 @@ import { ProductsModule } from './products/products.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -18,12 +21,20 @@ import { join } from 'path';
     MongooseModule.forRoot('mongodb+srv://awais:awaisme@brixtonbest.88al0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&ssl=true', {
       useNewUrlParser: true
     }),
+
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
     AuthModule,
     ProductsModule,
 
     MulterModule.register({
       dest: './files',
-    })
+    }),
+
+    MailModule,
+    Stripe
 
   ],
   controllers: [AppController, AuthController],
