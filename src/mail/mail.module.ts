@@ -14,15 +14,15 @@ import { MailController } from './mail.controller';
       useFactory: async (config: ConfigService) => ({
 
         transport: {
-          host: 'smtp.gmail.com',
-       
+          host: 'send.one.com',
+          port: 465,
           auth: {
-            user: 'muhammadawais083@gmail.com',
-            pass: 'awais2000.',
+            user: 'contact@brixtonbest.se',
+            pass: '725ZJSrEeZZsLAk',
           },
         },
         defaults: {
-          from: `"No Reply noreply@gmail.com" `,
+          from: `"No Reply noreply@brixtonbest.se" `,
         },
         template: {
           dir: join(__dirname, 'templates'),
