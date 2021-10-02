@@ -54,9 +54,6 @@ export class AuthService {
 
 
 
-
-
-
         if (this.user.includes('no record exists!!!')) {
             console.log('no user found');
             return 'No records associated with this email'

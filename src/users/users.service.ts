@@ -1,3 +1,5 @@
+import { MailService } from '../mail/mail.service';
+
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,6 +16,7 @@ export class UsersService {
 
 
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>,
+    private MS: MailService,
 
   ) {
 
@@ -56,7 +59,7 @@ export class UsersService {
   res: any;
 
   async searchByEmail(email: string) {
-    this.res = await this.userModel.find({ "email": { "$regex": email, "$options": "i" } })
+    this.res = await this.userModel.find({ "email": { "$eq": email } })
     if (this.res) {
       if (this.res.length != 0) {
         return this.res
@@ -64,9 +67,7 @@ export class UsersService {
       else if (this.res.length == 0) {
         return 'no record exists!!!'
       }
-      else {
-        return 'something went wrong check back later!!'
-      }
+
 
     }
     else {
@@ -77,13 +78,56 @@ export class UsersService {
   update(email: string, updateUserDto: UpdateUserDto) {
 
 
-    return this.userModel.updateOne({ email }, { $set: updateUserDto })
+    return this.userModel.updateOne({ "email": { "$eq": email } }, { $set: updateUserDto })
 
 
   }
 
   remove(email: string) {
- 
+
     return this.userModel.deleteOne({ email });
+  }
+
+  async recoverpass(data) {
+
+
+    this.res = await this.userModel.find({ "email": { "$eq": data.email } })
+    if (this.res) {
+
+
+      if (this.res.length != 0) {
+
+        this.MS.recoverpass(data.email, data.name)
+        return 'An email with instruction is sent to ' + data.email + ' Incase not recieved check junks'
+      }
+      else if (this.res.length == 0) {
+        return 'no record exists!!!'
+      }
+
+
+    }
+    else {
+      return 'we ran into a problem check back later!!'
+    }
+  }
+
+  async newpass(data, updateUserDto: UpdateUserDto,) {
+
+
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(data.password, saltOrRounds);
+    data.password = hash
+
+    const isMatch = await bcrypt.compare(data.password, hash);
+    console.log(isMatch);
+
+   if(!isMatch){
+
+   }
+   else{
+    this.userModel.updateOne({ "email": { "$eq": data.email } }, { $set: updateUserDto })
+
+    return 'password updated successfully!!'
+   }
   }
 }

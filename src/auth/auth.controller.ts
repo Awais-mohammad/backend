@@ -8,7 +8,7 @@ export class AuthController {
     }
     @Post()
     async login(@Body() LoginUserDto: LoginUserDto) {
-        // return await this.authService.validateUser(LoginUserDto);
+        return await this.authService.validateUser(LoginUserDto);
 
     }
     @Get()

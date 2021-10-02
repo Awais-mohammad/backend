@@ -11,6 +11,15 @@ export class MailController {
         return this.MailerService.sendUserConfirmation(data)
     }
 
+    @Post('c_order')
+    async pay(@Body() data: any) {
+
+
+
+        return await this.MailerService.orderGot(data)
+
+    }
+
     @Get()
     fine() {
         return 'working fine babes!!'

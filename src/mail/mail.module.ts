@@ -15,10 +15,10 @@ import { MailController } from './mail.controller';
 
         transport: {
           host: 'send.one.com',
-          port: 465,
+          port: 587,
           auth: {
-            user: 'contact@brixtonbest.se',
-            pass: '725ZJSrEeZZsLAk',
+            user: 'noreply@brixtonbest.se',
+            pass: '123456brix',
           },
         },
         defaults: {

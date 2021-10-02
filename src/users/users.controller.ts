@@ -16,6 +16,26 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+
+  @Post('recoverpass')
+  async pay(@Body() data: any) {
+
+
+
+    return await this.usersService.recoverpass(data)
+
+  }
+
+  @Post('updatepas')
+  async newpass(@Body() data: any, updateUserDto: UpdateUserDto,) {
+
+
+
+    return await this.usersService.newpass(data, updateUserDto)
+
+  }
+
+
   @Get()
   findAll() {
     return this.usersService.findAll();
