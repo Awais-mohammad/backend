@@ -14,7 +14,8 @@ async function bootstrap() {
     index: false,
     prefix: '/uploads',
   });
-  await app.listen(3000);
+  const port: number = parseInt(`${process.env.PORT}`) || 3000;
+  await app.listen(port);
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 
